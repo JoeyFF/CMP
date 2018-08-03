@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmp.dao.CmpUserDao" >
+
+    <!--用户自动注册-->
+    <insert id="insert" parameterType="com.cmp.pojo.CmpUser">
+        insert into cmp_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="openid != null" >
+                openid,
+            </if>
+            <if test="nickname != null" >
+                nickname,
+            </if>
+            <if test="sex != null" >
+                sex,
+            </if>
+            <if test="province != null" >
+                province,
+            </if>
+            <if test="city != null" >
+                city,
+            </if>
+            <if test="country != null" >
+                country,
+            </if>
+            <if test="address != null" >
+                address,
+            </if>
+            <if test="headimgurl != null" >
+                headimgurl,
+            </if>
+            <if test="subscribe != null">
+                subscribe,
+            </if>
+            <if test="groupid != null">
+                groupid,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="school != null">
+                school,
+            </if>
+            <if test="wx != null">
+                wx,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="openid != null" >
+                #{openid},
+            </if>
+            <if test="nickname != null" >
+                #{nickname},
+            </if>
+            <if test="sex != null" >
+                #{sex},
+            </if>
+            <if test="province != null" >
+                #{province},
+            </if>
+            <if test="city != null" >
+                #{city},
+            </if>
+            <if test="country != null" >
+                #{country},
+            </if>
+            <if test="address != null" >
+                #{address},
+            </if>
+            <if test="headimgurl != null" >
+                #{headimgurl},
+            </if>
+            <if test="subscribe != null">
+                #{subscribe},
+            </if>
+            <if test="groupid != null">
+                #{groupid},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="school != null">
+                #{school},
+            </if>
+            <if test="wx != null">
+                #{wx},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

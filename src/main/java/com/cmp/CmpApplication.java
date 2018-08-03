@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 //扫描mapper包的位置
-@MapperScan("com.cmp.mapper")
+@MapperScan("com.cmp.dao")
 public class CmpApplication {
 
     public static void main(String[] args) {
