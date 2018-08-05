@@ -1,10 +1,13 @@
 package com.cmp.service;
 
 import com.cmp.pojo.CmpUser;
+import org.springframework.stereotype.Service;
 
 /**
- * CmpUserservice层
+ * @author zdb
+ * CmpUserService层
  */
+@Service
 public interface CmpUserService {
     /**
      * 用户自动注册
@@ -19,15 +22,16 @@ public interface CmpUserService {
      * @param password
      * @return
      */
-    public CmpUser loginByWx(String wx , String password);
+    public CmpUser loginByWx(String wx , String password) throws NullPointerException;
 
     /**
      * 根据手机号和密码登录
      * @param phone
      * @param password
+     * @throws NullPointerException
      * @return
      */
-    public CmpUser loginByPhone(String phone , String password);
+    public CmpUser loginByPhone(String phone , String password) throws NullPointerException;
 
     /**
      * 根据openid查询用户
@@ -53,15 +57,17 @@ public interface CmpUserService {
     /**
      * 更新用户信息
      * @param cmpUser
+     * @throws NullPointerException
      * @return
      */
-    public int update(CmpUser cmpUser);
+    public int update(CmpUser cmpUser) throws NullPointerException;
 
     /**
      * 用户更新密码
      * @param phone
      * @param password
+     * @throws NullPointerException
      * @return
      */
-    public int updatePassword(String phone , String password);
+    public int updatePassword(String phone , String password) throws NullPointerException;
 }
