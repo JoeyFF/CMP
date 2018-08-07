@@ -16,11 +16,56 @@ public class TestCmpUserService {
     @Test
     public void testInsert(){
         CmpUser cmpUser = new CmpUser();
-        cmpUser.setOpenid("fess1293");
-        cmpUser.setNickname("dsdz12");
-        cmpUser.setSex(2);
+        cmpUser.setOpenid("fefe3");
+        cmpUser.setNickname("dsfdz12");
+        cmpUser.setSex((byte) 2);
+        cmpUser.setPhone("1892189318");
+        cmpUser.setPassword("123456");
         System.out.println(cmpUserService.insert(cmpUser));
         System.out.println("成功执行");
     }
 
+    @Test
+    public void testLoginByWx(){
+        CmpUser cmpUser = cmpUserService.loginByWx("mydwsas" , "123456");
+        System.out.println(cmpUser);
+    }
+
+    @Test
+    public void testLoginByPhone(){
+        CmpUser cmpUser = cmpUserService.loginByPhone("1892189318" , "123456");
+        System.out.println(cmpUser);
+    }
+
+    @Test
+    public void testSelectByOpenid(){
+        CmpUser cmpUser = cmpUserService.selectByOpenid("1231cdc93");
+        System.out.println(cmpUser);
+    }
+
+    @Test
+    public void testSelectByPhone(){
+        CmpUser cmpUser = cmpUserService.selectByPhone("1892189318");
+        System.out.println(cmpUser);
+    }
+
+    @Test
+    public void testSelectByWx(){
+        CmpUser cmpUser = cmpUserService.selectByWx("mydwsas");
+        System.out.println(cmpUser);
+    }
+
+    @Test
+    public void testUpdate(){
+        CmpUser cmpUser = cmpUserService.selectByWx("mydwsas");
+        cmpUser.setPassword("123456789");
+        cmpUserService.update(cmpUser);
+        System.out.println(cmpUserService.update(cmpUser));
+    }
+
+    @Test
+    public void testUpdatePassword(){
+        System.out.println(cmpUserService.updatePassword("1892189318" ,"12345678"));
+
+    }
 }

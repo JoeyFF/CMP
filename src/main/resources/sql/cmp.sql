@@ -10,6 +10,7 @@ use cmp;
 CREATE TABLE cmp_user (
   openid varchar(30) NOT NULL COMMENT '用户在此公众平台上唯一标识',
   nickname varchar(50) NOT NULL COMMENT '昵称',
+  realname varchar(50) DEFAULT NULL COMMENT '真实姓名',
   sex tinyint(4) NOT NULL COMMENT '性别 1：男性 2 女性',
   province varchar(20) DEFAULT NULL COMMENT '用户所在省份',
   city varchar(20) DEFAULT NULL COMMENT '用户所在城市',
@@ -22,6 +23,7 @@ CREATE TABLE cmp_user (
   password varchar(32) DEFAULT NULL COMMENT '密码，md5加密',
   school varchar(50) DEFAULT NULL  COMMENT '学校名称',
   wx varchar(40) DEFAULT NULL COMMENT '注册微信号',
+  remark varchar(255) DEFAULT NULL COMMENT '用户备注',
   created timestamp NOT NULL default CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`openid`),
   UNIQUE KEY `phone` (`phone`) USING BTREE,
