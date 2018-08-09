@@ -16,10 +16,10 @@ public class TestCmpUserService {
     @Test
     public void testInsert(){
         CmpUser cmpUser = new CmpUser();
-        cmpUser.setOpenid("fefe3");
-        cmpUser.setNickname("dsfdz12");
-        cmpUser.setSex((byte) 2);
-        cmpUser.setPhone("1892189318");
+        cmpUser.setOpenid("fe32dasxs");
+        cmpUser.setNickname("dsfcx2");
+        cmpUser.setSex((byte) 1);
+        cmpUser.setPhone("18921367318");
         cmpUser.setPassword("123456");
         System.out.println(cmpUserService.insert(cmpUser));
         System.out.println("成功执行");

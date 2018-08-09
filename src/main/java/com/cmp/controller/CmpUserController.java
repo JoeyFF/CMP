@@ -47,20 +47,20 @@ public class CmpUserController {
             subscribe = Byte.parseByte(request.getParameter("subscribe").trim());
             groupid = Long.parseLong(request.getParameter("groupid").trim());
         }catch(Exception e){
-            result = new Result<String>(400,"输入有误",null);
+            result = Result.Error("输入有误");
             return result;
         }
         //不能为空的
         if("".equals(openid)){
-            result = new Result<String>(400,"openid不能为空",null);
+            result = Result.Error("openid不能为空");
             return result;
         }
         if("".equals(nickname)){
-            result = new Result<String>(400,"nickname不能为空",null);
+            result = Result.Error("nickname不能为空");
             return result;
         }
         if("".equals(sex)){
-            result = new Result<String>(400,"sex不能为空",null);
+            result = Result.Error("sex不能为空");
             return result;
         }
 
@@ -81,10 +81,10 @@ public class CmpUserController {
             //成功执行
             SessionUtils.setSessionAttribute(request ,"openid" , openid);
             CookieUtils.setCookie(request , response ,"nickname" , nickname , 604800);
-            result = new Result<String>(200,"OK",null);
+            result = Result.Success();
             return result;
         }else{
-            result = new Result<String>(400,"手机号或者微信号重复",null);
+            result = Result.Error("手机号或者微信号重复");
             return result;
         }
     }
@@ -101,17 +101,17 @@ public class CmpUserController {
     	String wx = request.getParameter("wx").trim();
     	String password = request.getParameter("password").trim();
     	if(wx.isEmpty() || password.isEmpty()){
-            result = new Result<String>(400,"账户或者密码不能为空",null);
+            result = Result.Error("账户或者密码不能为空");
             return result;
         }
     	CmpUser user = cmpUserService.loginByWx(wx, password);
     	if(user != null) {
     		 SessionUtils.setSessionAttribute(request ,"openid" , user.getOpenid());
     	     CookieUtils.setCookie(request , response ,"nickname" , user.getNickname() , 604800);
-    	     result = new Result<String>(200,"OK",null);
+    	     result = Result.Success();
     	     return result;
     	}else{
-    		result = new Result<String>(400,"账户或者密码错误",null);
+    		result = Result.Error("账户或者密码错误");
     		return result;
     	}
     }
@@ -128,7 +128,7 @@ public class CmpUserController {
     	String phone = request.getParameter("phone").trim();
     	String password = request.getParameter("password").trim();
     	if(phone.isEmpty() || password.isEmpty()){
-            result = new Result<String>(400,"账户或者密码不能为空",null);
+            result = Result.Error("账户或者密码不能为空");
             return result;
         }
     	CmpUser user = cmpUserService.loginByPhone(phone, password);
@@ -136,10 +136,10 @@ public class CmpUserController {
     	if(user != null) {
     		 SessionUtils.setSessionAttribute(request ,"openid" , user.getOpenid());
     	     CookieUtils.setCookie(request , response ,"nickname" , user.getNickname() , 604800);
-    	     result = new Result<String>(200,"OK",null);
+    	     result = Result.Success();
     	     return result;
     	}else{
-    		result = new Result<String>(400,"账户或者密码错误",null);
+    		result = Result.Error("账户或者密码错误");
     		return result;
     	}
     }
@@ -163,7 +163,7 @@ public class CmpUserController {
     		result = new Result<CmpUser>(200,"OK",user);
     	    return result;
     	}else{
-    		result = new Result<CmpUser>(400,"用户未找到",null);
+            result = Result.Error("用户未找到");
     		return result;
     	}
     }
@@ -187,7 +187,7 @@ public class CmpUserController {
     		result = new Result<CmpUser>(200,"OK",user);
     	    return result;
     	}else{
-    		result = new Result<CmpUser>(400,"用户未找到",null);
+            result = Result.Error("用户未找到");
     		return result;
     	}
     }
@@ -211,7 +211,7 @@ public class CmpUserController {
     		result = new Result<CmpUser>(200,"OK",user);
     	    return result;
     	}else{
-    		result = new Result<CmpUser>(400,"用户未找到",null);
+            result = Result.Error("用户未找到");
     		return result;
     	}
     }
@@ -262,10 +262,10 @@ public class CmpUserController {
         int num = cmpUserService.update(cmpUser);
         if(num >= 1){
             //成功执行
-            result = new Result<String>(200,"OK",null);
+            result = Result.Success();
             return result;
         }else{
-            result = new Result<String>(400,"设置信息异常",null);
+            result = Result.Error("设置信息异常");
             return result;
         }
     }
@@ -290,10 +290,10 @@ public class CmpUserController {
 
     	if(num >= 1) {
             //成功执行
-            result = new Result<String>(200,"OK",null);
+            result = Result.Success();
             return result;
         }else{
-            result = new Result<String>(400,"设置信息异常",null);
+            result = Result.Error("设置信息异常");
             return result;
         }
 
