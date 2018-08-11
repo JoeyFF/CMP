@@ -10,6 +10,7 @@ use cmp;
 CREATE TABLE cmp_user (
   openid varchar(30) NOT NULL COMMENT '用户在此公众平台上唯一标识',
   nickname varchar(50) NOT NULL COMMENT '昵称',
+  realname varchar(50) DEFAULT NULL COMMENT '真实姓名',
   sex tinyint(4) NOT NULL COMMENT '性别 1：男性 2 女性',
   province varchar(20) DEFAULT NULL COMMENT '用户所在省份',
   city varchar(20) DEFAULT NULL COMMENT '用户所在城市',
@@ -22,13 +23,29 @@ CREATE TABLE cmp_user (
   password varchar(32) DEFAULT NULL COMMENT '密码，md5加密',
   school varchar(50) DEFAULT NULL  COMMENT '学校名称',
   wx varchar(40) DEFAULT NULL COMMENT '注册微信号',
+  remark varchar(255) DEFAULT NULL COMMENT '用户备注',
   created timestamp NOT NULL default CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`openid`),
   UNIQUE KEY `phone` (`phone`) USING BTREE,
   UNIQUE KEY `wx` (`wx`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
-
+-- 创建收货地址表
+CREATE TABLE cmp_address(
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(50) NOT NULL COMMENT '收货人姓名',
+  phone varchar(20) NOT NULL COMMENT '收货人手机号',
+  province varchar(20) NOT NULL COMMENT '用户所在省份',
+  city varchar(20) NOT NULL COMMENT '用户所在城市',
+  country varchar(20) NOT NULL COMMENT '用户所在国家',
+  address varchar(50) NOT NULL COMMENT '用户的详细地址',
+  created timestamp NOT NULL default CURRENT_TIMESTAMP COMMENT '添加时间',
+  openid varchar(30) NOT NULL COMMENT '用户在此公众平台上唯一标识',
+  type int DEFAULT 1 COMMENT '-1 表示删除地址 0 表示默认地址 1 表示附加地址',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `openid` (`openid`) USING BTREE,
+  UNIQUE KEY `phone` (`phone`) USING BTREE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收货地址表';
 
 ----------------------- 下面的建表语句还未修改，请不要使用-----------------------
 --

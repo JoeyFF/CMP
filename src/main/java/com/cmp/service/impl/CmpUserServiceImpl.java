@@ -2,11 +2,14 @@ package com.cmp.service.impl;
 
 import com.cmp.dao.CmpUserDao;
 import com.cmp.pojo.CmpUser;
+import com.cmp.pojo.CmpUserQuery;
 import com.cmp.service.CmpUserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author zdb
@@ -20,118 +23,114 @@ public class CmpUserServiceImpl implements CmpUserService {
     private CmpUserDao cmpUserDao;
 
     @Override
+    /**
+     * 插入用户
+     */
     public int insert(CmpUser cmpUser) {
         return cmpUserDao.insert(cmpUser);
     }
 
+    @Override
     /**
      * 通过微信号和密码登录，账号不存在和密码错误都将抛出异常
-     * @param wx
-     * @param password
-     * @return
      */
-    @Override
-    public CmpUser loginByWx(String wx, String password) throws NullPointerException{
-        CmpUser cmpUser = cmpUserDao.selectByWx(wx);
-        if (cmpUser == null) {
-            throw new NullPointerException("账号不存在");
-        } else{
-            cmpUser = cmpUserDao.loginByWx(wx, password);
-            if (cmpUser == null) {
-                throw new NullPointerException("密码错误");
-            }
+    public CmpUser loginByWx(String wx, String password) throws NullPointerException {
+        CmpUserQuery example = new CmpUserQuery();
+        CmpUserQuery.Criteria criteria = example.createCriteria();
+        criteria.andWxEqualTo(wx);
+        criteria.andPasswordEqualTo(password);
+        List<CmpUser> result = cmpUserDao.selectByExample(example);
+        if(result.isEmpty()){
+            return null;
+        }else{
+            return result.get(0);
         }
-        return cmpUser;
     }
 
+    @Override
     /**
      * 通过手机号和密码登录，账号不存在和密码错误都会抛出异常
-     * @param phone
-     * @param password
-     * @return
-     * @throws NullPointerException
      */
-    @Override
-    public CmpUser loginByPhone(String phone, String password) throws NullPointerException{
-        CmpUser cmpUser = cmpUserDao.selectByPhone(phone);
-        if (cmpUser == null) {
-            throw new NullPointerException("账号不存在");
-        } else{
-            cmpUser = cmpUserDao.loginByPhone(phone, password);
-            if (cmpUser == null) {
-                throw new NullPointerException("密码错误");
-            }
+    public CmpUser loginByPhone(String phone, String password) throws NullPointerException {
+        CmpUserQuery example = new CmpUserQuery();
+        CmpUserQuery.Criteria criteria = example.createCriteria();
+        criteria.andPhoneEqualTo(phone);
+        criteria.andPasswordEqualTo(password);
+        List<CmpUser> result = cmpUserDao.selectByExample(example);
+        if(result.isEmpty()){
+            return null;
+        }else{
+            return result.get(0);
         }
-        return cmpUser;
     }
 
+    @Override
     /**
      * 根据openid查找用户
-     * @param openid
-     * @return
      */
-    @Override
     public CmpUser selectByOpenid(String openid) {
-        CmpUser cmpUser = cmpUserDao.selectByOpenid(openid);
-        return cmpUser;
+        return cmpUserDao.selectByPrimaryKey(openid);
     }
 
+    @Override
     /**
      * 通过手机号查找用户
-     * @param phone
-     * @return
      */
-    @Override
     public CmpUser selectByPhone(String phone) {
-        CmpUser cmpUser = cmpUserDao.selectByPhone(phone);
-        return cmpUser;
+        CmpUserQuery example = new CmpUserQuery();
+        CmpUserQuery.Criteria criteria = example.createCriteria();
+        criteria.andPhoneEqualTo(phone);
+        List<CmpUser> result = cmpUserDao.selectByExample(example);
+        if(result.isEmpty()){
+            return null;
+        }else{
+            return result.get(0);
+        }
     }
 
+    @Override
     /**
      * 通过微信号查找用户
-     * @param wx
-     * @return
      */
-    @Override
     public CmpUser selectByWx(String wx) {
-        CmpUser cmpUser = cmpUserDao.selectByWx(wx);
-        return cmpUser;
+        CmpUserQuery example = new CmpUserQuery();
+        CmpUserQuery.Criteria criteria = example.createCriteria();
+        criteria.andWxEqualTo(wx);
+        List<CmpUser> result = cmpUserDao.selectByExample(example);
+        if(result.isEmpty()){
+            return null;
+        }else{
+            return result.get(0);
+        }
     }
 
+    @Override
     /**
      * 更新用户，如果没有该用户就抛出异常，非法更新
-     * @param cmpUser
-     * @return
-     * @throws NullPointerException
      */
-    @Override
-    public int update(CmpUser cmpUser) throws NullPointerException{
-        String openid = cmpUser.getOpenid();
-        if (cmpUserDao.selectByOpenid(openid) != null) {
-            return cmpUserDao.update(cmpUser);
-        } else {
-            throw new NullPointerException("非法更新，没有此用户");
+    public int update(CmpUser cmpUser) throws NullPointerException {
+        CmpUser exisUser = selectByOpenid(cmpUser.getOpenid());
+        if(exisUser != null){
+            //跟新用户
+            return cmpUserDao.updateByPrimaryKey(cmpUser);
+        }else{
+            return 0;
         }
     }
 
-
+    @Override
     /**
-     * 更新用户密码，如果没有该用户将无法进行更新
-     * @param phone
-     * @param password
-     * @return
-     * @throws NullPointerException
+     * 更新密码
      */
-    @Override
-    public int updatePassword(String phone, String password) throws NullPointerException{
-        CmpUser cmpUser = cmpUserDao.selectByPhone(phone);
-        //没有这个用户
-        if (cmpUser != null) {
-            return cmpUserDao.updatePassword(phone, password);
-        } else {
-            //抛出异常和返回0冲突，当用户不存在的时候就抛出异常
-            //将异常让高层捕捉，捕捉到异常时就说明用户不存在
-            throw new NullPointerException("非法更新，没有此用户");
+    public int updatePassword(String phone, String password) throws NullPointerException {
+        CmpUser exisUser = selectByPhone(phone);
+        if(exisUser != null){
+            //更新密码
+            exisUser.setPassword(password);
+            return cmpUserDao.updateByPrimaryKey(exisUser);
+        }else{
+            return 0;
         }
     }
+
 }

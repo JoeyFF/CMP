@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.DateFormat;
 
 /**
  * CmpUser控制层
@@ -31,37 +30,37 @@ public class CmpUserController {
      */
     @PostMapping(value = "/user/register")
     public Result<String> register(HttpServletRequest request , HttpServletResponse response){
-        Result<String> result = new Result<>(200 , "测试" ,null);
+        Result<String> result;
 
         String openid = request.getParameter("openid").trim();
         String nickname = request.getParameter("nickname").trim();
-        int sex;
+        Byte sex;
         String province = request.getParameter("province").trim();
         String city = request.getParameter("city").trim();
         String country = request.getParameter("country").trim();
         String headimgurl = request.getParameter("headimgurl").trim();
-        int subscribe;
-        int groupid;
+        Byte subscribe;
+        Long groupid;
         //类型强转
         try{
-            sex = Integer.parseInt(request.getParameter("sex").trim());
-            subscribe = Integer.parseInt(request.getParameter("subscribe").trim());
-            groupid = Integer.parseInt(request.getParameter("groupid").trim());
+            sex = Byte.parseByte(request.getParameter("sex").trim());
+            subscribe = Byte.parseByte(request.getParameter("subscribe").trim());
+            groupid = Long.parseLong(request.getParameter("groupid").trim());
         }catch(Exception e){
-            result = new Result<String>(400,"输入有误",null);
+            result = Result.Error("输入有误");
             return result;
         }
         //不能为空的
         if("".equals(openid)){
-            result = new Result<String>(400,"openid不能为空",null);
+            result = Result.Error("openid不能为空");
             return result;
         }
         if("".equals(nickname)){
-            result = new Result<String>(400,"nickname不能为空",null);
+            result = Result.Error("nickname不能为空");
             return result;
         }
         if("".equals(sex)){
-            result = new Result<String>(400,"sex不能为空",null);
+            result = Result.Error("sex不能为空");
             return result;
         }
 
@@ -82,14 +81,14 @@ public class CmpUserController {
             //成功执行
             SessionUtils.setSessionAttribute(request ,"openid" , openid);
             CookieUtils.setCookie(request , response ,"nickname" , nickname , 604800);
-            result = new Result<String>(200,"OK",null);
+            result = Result.Success();
             return result;
         }else{
-            result = new Result<String>(400,"手机号或者微信号重复",null);
+            result = Result.Error("手机号或者微信号重复");
             return result;
         }
     }
-    
+
     /**
      * 根据微信号和密码登录
      * @param request
@@ -98,21 +97,25 @@ public class CmpUserController {
      */
     @PostMapping(value = "/user/login_wx")
     public Result<String> login_wx(HttpServletRequest request , HttpServletResponse response){
-    	Result<String> result = new Result<>(200 , "测试" ,null);
+    	Result<String> result;
     	String wx = request.getParameter("wx").trim();
-    	String password = request.getParameter("password").trim();   	
+    	String password = request.getParameter("password").trim();
+    	if(wx.isEmpty() || password.isEmpty()){
+            result = Result.Error("账户或者密码不能为空");
+            return result;
+        }
     	CmpUser user = cmpUserService.loginByWx(wx, password);
-    	if(user!=null) {
+    	if(user != null) {
     		 SessionUtils.setSessionAttribute(request ,"openid" , user.getOpenid());
     	     CookieUtils.setCookie(request , response ,"nickname" , user.getNickname() , 604800);
-    	     result = new Result<String>(200,"OK",null);
+    	     result = Result.Success();
     	     return result;
     	}else{
-    		result = new Result<String>(400,"账户或者密码错误",null);
+    		result = Result.Error("账户或者密码错误");
     		return result;
     	}
     }
-    
+
     /**
      * 根据手机号和密码登录
      * @param request
@@ -121,50 +124,59 @@ public class CmpUserController {
      */
     @PostMapping(value = "/user/login_phone")
     public Result<String> login_phone(HttpServletRequest request , HttpServletResponse response){
-    	Result<String> result = new Result<>(200 , "测试" ,null);
+    	Result<String> result;
     	String phone = request.getParameter("phone").trim();
-    	String password = request.getParameter("password").trim();  	
+    	String password = request.getParameter("password").trim();
+    	if(phone.isEmpty() || password.isEmpty()){
+            result = Result.Error("账户或者密码不能为空");
+            return result;
+        }
     	CmpUser user = cmpUserService.loginByPhone(phone, password);
-    	if(user!=null) {
+
+    	if(user != null) {
     		 SessionUtils.setSessionAttribute(request ,"openid" , user.getOpenid());
     	     CookieUtils.setCookie(request , response ,"nickname" , user.getNickname() , 604800);
-    	     result = new Result<String>(200,"OK",null);
+    	     result = Result.Success();
     	     return result;
     	}else{
-    		result = new Result<String>(400,"账户或者密码错误",null);
+    		result = Result.Error("账户或者密码错误");
     		return result;
     	}
     }
-    
+
     /**
      * 根据手机号查询用户
      * @param request
      * @param response
      * @return Result<CmpUser>
      */
-    @GetMapping("/user/findinfo_phone?phone=PHONE")
+    @GetMapping("/user/findinfo_phone")
     public Result<CmpUser> findinfo_phone(HttpServletRequest request , HttpServletResponse response){
-    	Result<CmpUser> result = new Result<CmpUser>(200 , "测试" ,null);
+    	Result<CmpUser> result;
     	String phone = request.getParameter("phone").trim();
+    	if(phone.isEmpty()){
+            result = new Result<CmpUser>(400,"手机号不能为空",null);
+            return result;
+        }
     	CmpUser user = cmpUserService.selectByPhone(phone);
-    	if(user!=null) {
+    	if(user != null) {
     		result = new Result<CmpUser>(200,"OK",user);
     	    return result;
     	}else{
-    		result = new Result<CmpUser>(400,"用户未找到",null);
+            result = Result.Error("用户未找到");
     		return result;
     	}
     }
-    
+
     /**
      * 根据openid查询用户
      * @param request
      * @param response
      * @return
      */
-    @GetMapping("/user/findinfo_openid?openid=OPENID")
+    @GetMapping("/user/findinfo_openid")
     public Result<CmpUser> findinfo_openid(HttpServletRequest request , HttpServletResponse response){
-    	Result<CmpUser> result = new Result<CmpUser>(200 , "测试" ,null);
+    	Result<CmpUser> result;
     	String openid = request.getParameter("openid").trim();
     	if("".equals(openid)) {
     		result = new Result<CmpUser>(400 , "openid不能为空" ,null);
@@ -175,31 +187,35 @@ public class CmpUserController {
     		result = new Result<CmpUser>(200,"OK",user);
     	    return result;
     	}else{
-    		result = new Result<CmpUser>(400,"用户未找到",null);
+            result = Result.Error("用户未找到");
     		return result;
     	}
     }
-    
+
     /**
      * 根据微信号查询用户
      * @param request
      * @param response
      * @return
      */
-    @GetMapping("/user/findinfo_wx?wx=WX")
+    @GetMapping("/user/findinfo_wx")
     public Result<CmpUser> findinfo_wx(HttpServletRequest request , HttpServletResponse response){
-    	Result<CmpUser> result = new Result<CmpUser>(200 , "测试" ,null);
+    	Result<CmpUser> result;
     	String wx = request.getParameter("wx").trim();
+    	if(wx.isEmpty()){
+            result = new Result<CmpUser>(400,"微信号不能为空",null);
+            return result;
+        }
     	CmpUser user = cmpUserService.selectByWx(wx);
     	if(user!=null) {
     		result = new Result<CmpUser>(200,"OK",user);
     	    return result;
     	}else{
-    		result = new Result<CmpUser>(400,"用户未找到",null);
+            result = Result.Error("用户未找到");
     		return result;
     	}
     }
-    
+
     /**
      * 更新用户信息
      * @param request
@@ -217,10 +233,10 @@ public class CmpUserController {
         String country = request.getParameter("country").trim();
         String address = request.getParameter("address").trim();
         String wx = request.getParameter("wx").trim();
-        int sex;
+        Byte sex;
         //类型强转
         try{
-            sex = Integer.parseInt(request.getParameter("sex").trim());
+            sex = Byte.parseByte(request.getParameter("sex").trim());
         }catch(Exception e){
             result = new Result<String>(400,"输入有误",null);
             return result;
@@ -234,6 +250,7 @@ public class CmpUserController {
         CmpUser cmpUser = new CmpUser();
         cmpUser.setPhone(phone);
         cmpUser.setSchool(school);;
+        cmpUser.setSex(sex);
         cmpUser.setProvince(province);
         cmpUser.setCity(city);
         cmpUser.setCountry(country);
@@ -245,14 +262,14 @@ public class CmpUserController {
         int num = cmpUserService.update(cmpUser);
         if(num >= 1){
             //成功执行
-            result = new Result<String>(200,"OK",null);
+            result = Result.Success();
             return result;
         }else{
-            result = new Result<String>(400,"设置信息异常",null);
+            result = Result.Error("设置信息异常");
             return result;
         }
     }
-    
+
     /**
      * 用户更新密码
      * @param request
@@ -261,21 +278,26 @@ public class CmpUserController {
      */
     @PostMapping("/user/set_password")
     public Result<String> set_password(HttpServletRequest request , HttpServletResponse response){
-    	Result<String> result = new Result<>(200,"测试",null);
+    	Result<String> result;
     	String code = request.getParameter("code").trim();
     	String password = request.getParameter("password").trim();
-    	int num = cmpUserService.updatePassword(code, password);
-    			
-    	if(num >= 1) {
-            //成功执行
-            result = new Result<String>(200,"OK",null);
-            return result;
-        }else{
-            result = new Result<String>(400,"设置信息异常",null);
+        String phone = request.getParameter("phone").trim();
+        if(code.isEmpty() || password.isEmpty() || phone.isEmpty()){
+            result = new Result<String>(400,"信息异常",null);
             return result;
         }
-    	
+    	int num = cmpUserService.updatePassword(phone, password);
+
+    	if(num >= 1) {
+            //成功执行
+            result = Result.Success();
+            return result;
+        }else{
+            result = Result.Error("设置信息异常");
+            return result;
+        }
+
     }
-    
-    
+
+
 }
