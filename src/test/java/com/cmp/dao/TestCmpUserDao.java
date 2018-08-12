@@ -17,10 +17,15 @@ public class TestCmpUserDao {
     @Test
     public void testInsert(){
         CmpUser cmpUser = new CmpUser();
-        cmpUser.setOpenid("iu1293");
-        cmpUser.setNickname("djson12");
-        cmpUser.setSex(1);
+        cmpUser.setOpenid("1231cdc93");
+        cmpUser.setNickname("ddc12");
+        cmpUser.setWx("mydwsas");
+        cmpUser.setPassword("123456");
+        cmpUser.setSex(Byte.parseByte("1"));
         System.out.println(cmpUserDao.insert(cmpUser));
         System.out.println("成功插入");
     }
+
+
+
 }
