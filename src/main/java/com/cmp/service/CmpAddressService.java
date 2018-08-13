@@ -24,7 +24,7 @@ public interface CmpAddressService {
      * @param id
      * @return
      */
-    public int delAddress(String openid , String id);
+    public int delAddress(String openid , int id);
 
     /**
      * 更新指定id的收货地址
@@ -47,5 +47,5 @@ public interface CmpAddressService {
      * @param id
      * @return
      */
-    public CmpAddress selectOneAddress(String openid , String id);
+    public CmpAddress selectOneAddress(String openid , int id);
 }

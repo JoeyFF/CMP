@@ -46,12 +46,14 @@ public class CmpAddressController {
         String province = request.getParameter("province").trim();
         String city = request.getParameter("city").trim();
         String country = request.getParameter("city").trim();
+        String address = request.getParameter("address").trim();
         Integer type = null;
         /**
          * 对收获地址类型进行判断，确保返回整形，通过异常捕捉进行判断
          */
         try {
             type = Integer.parseInt(request.getParameter("type").trim());
+            type = 0 == type ? 0 : 1;
         } catch (Exception e) {
             result = Result.Error("收货地址类型错误");
             return result;
@@ -68,16 +70,17 @@ public class CmpAddressController {
             result = Result.Error("phone不能为空");
             return result;
         }
-        if ("".equals(province)) {
-            result = Result.Error("province不能为空");
-            return result;
-        }
+
         if ("".equals(city)) {
             result = Result.Error("city不能为空");
             return result;
         }
         if ("".equals(country)) {
             result = Result.Error("country不能为空");
+            return result;
+        }
+        if ("".equals(address)) {
+            result = Result.Error("address不能为空");
             return result;
         }
         if (type == null) {
@@ -96,6 +99,7 @@ public class CmpAddressController {
         cmpAddress.setCountry(country);
         cmpAddress.setType(type);
         cmpAddress.setOpenid(openid);
+        cmpAddress.setAddress(address);
 
         /**
          * 将收获地址进行持久化存储
@@ -126,13 +130,21 @@ public class CmpAddressController {
         /**
          * 从session中获取openid
          */
-        String id = request.getParameter("id");
+        Integer id;
         String openid = (String)SessionUtils.getSessionAttribute(request, "openid");
+
+        try{
+            id = Integer.parseInt(request.getParameter("id").trim());
+        }catch(Exception e){
+            result = Result.Error("数据异常，请重新尝试");
+            return result;
+        }
+
         /**
          * 确保已经登陆才进行地址的删除
          * 用session的getAttribute方法返回的是Object，用以判断用null进行判断
          */
-        if (openid == null) {
+        if (openid == null || "".equals(openid)) {
             result = Result.Error("尚未登陆");
             return result;
         }
@@ -142,9 +154,9 @@ public class CmpAddressController {
          */
         if (resultCount <= 0) {
             result = Result.Error("设置信息异常");
-            return result;
+        }else{
+            result = Result.Success("OK");
         }
-        result = Result.Success("OK");
         return result;
     }
 
@@ -161,7 +173,7 @@ public class CmpAddressController {
 
         Result<String> result;
         String openid = (String)SessionUtils.getSessionAttribute(request, "openid");
-        if (openid == null) {
+        if (openid == null || "".equals(openid)) {
             result = Result.Error("尚未登陆");
             return result;
         }
@@ -173,6 +185,7 @@ public class CmpAddressController {
         String province = request.getParameter("province").trim();
         String city = request.getParameter("city").trim();
         String country = request.getParameter("city").trim();
+        String address = request.getParameter("address").trim();
         Integer type = null;
         /**
          * 对收获地址类型进行判断，确保返回整形，通过异常捕捉进行判断
@@ -195,8 +208,8 @@ public class CmpAddressController {
             result = Result.Error("phone不能为空");
             return result;
         }
-        if ("".equals(province)) {
-            result = Result.Error("province不能为空");
+        if ("".equals(address)) {
+            result = Result.Error("address不能为空");
             return result;
         }
         if ("".equals(city)) {
@@ -223,12 +236,15 @@ public class CmpAddressController {
         cmpAddress.setCountry(country);
         cmpAddress.setType(type);
         cmpAddress.setOpenid(openid);
+        cmpAddress.setAddress(address);
 
         int resultCount = cmpAddressService.updateAddress(cmpAddress);
         if (resultCount <= 0) {
             result = Result.Error("设置信息异常");
+        }else{
+            result = Result.Success("OK");
         }
-        result = Result.Success("OK");
+
         return result;
     }
 
@@ -244,7 +260,7 @@ public class CmpAddressController {
     public Result<List<CmpAddress>> get_address(HttpServletRequest request) {
         Result<List<CmpAddress>> result;
         String openid = (String)SessionUtils.getSessionAttribute(request, "openid");
-        if (openid == null) {
+        if (openid == null || "".equals(openid)) {
             result = Result.Error("尚未登陆");
             return result;
         }
@@ -270,7 +286,15 @@ public class CmpAddressController {
             result = Result.Error("尚未登陆");
             return result;
         }
-        String id = request.getParameter("id");
+        Integer id;
+
+        try{
+            id = Integer.parseInt(request.getParameter("id").trim());
+        }catch(Exception e){
+            result = Result.Error("数据异常，请重新尝试");
+            return result;
+        }
+
         if ("".equals(id)) {
             result = Result.Error("id不能为空");
             return result;

@@ -43,8 +43,8 @@ CREATE TABLE cmp_address(
   openid varchar(30) NOT NULL COMMENT '用户在此公众平台上唯一标识',
   type int DEFAULT 1 COMMENT '-1 表示删除地址 0 表示默认地址 1 表示附加地址',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `openid` (`openid`) USING BTREE,
-  UNIQUE KEY `phone` (`phone`) USING BTREE
+  KEY `openid` (`openid`) USING BTREE,
+  KEY `phone` (`phone`) USING BTREE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收货地址表';
 
 ----------------------- 下面的建表语句还未修改，请不要使用-----------------------
