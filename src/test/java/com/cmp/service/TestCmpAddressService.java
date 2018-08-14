@@ -41,7 +41,7 @@ public class TestCmpAddressService {
     @Test
     public void testSelectOneAddress(){
         String openid = "iu1293";
-        int id = 2;
+        int id = 3;
         System.out.println(cmpAddressService.selectOneAddress(openid , id));
     }
 
@@ -56,7 +56,7 @@ public class TestCmpAddressService {
         String openid = "iu1293";
         int id = 3;
         CmpAddress cmpAddress = cmpAddressService.selectOneAddress(openid , id);
-        cmpAddress.setName("张二狗");
+        cmpAddress.setName("张三狗");
         int num = cmpAddressService.updateAddress(cmpAddress);
         System.out.println("成功执行了 " + num + " 行");
     }

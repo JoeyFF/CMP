@@ -31,7 +31,7 @@ public class CmpAddressController {
      * @return Result<String>
      */
     @RequestMapping(value = "/add_address", method = RequestMethod.POST)
-    public Result<String> add_address(HttpServletRequest request, HttpServletResponse response) {
+    public Result add_address(HttpServletRequest request, HttpServletResponse response) {
         Result<String> result;
         String openid = (String)SessionUtils.getSessionAttribute(request, "openid");
         if (openid == null) {
@@ -123,7 +123,7 @@ public class CmpAddressController {
      * @return Result<String>
      */
     @RequestMapping(value = "/del_address", method = RequestMethod.POST)
-    public Result<String> del_address(HttpServletRequest request, HttpServletResponse response) {
+    public Result del_address(HttpServletRequest request, HttpServletResponse response) {
 
         Result<String> result;
 
@@ -169,7 +169,7 @@ public class CmpAddressController {
      * @return Result<String>
      */
     @RequestMapping(value = "/update_address", method = RequestMethod.POST)
-    public Result<String> update_address(HttpServletRequest request, HttpServletResponse response) {
+    public Result update_address(HttpServletRequest request, HttpServletResponse response) {
 
         Result<String> result;
         String openid = (String)SessionUtils.getSessionAttribute(request, "openid");

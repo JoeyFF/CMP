@@ -22,7 +22,7 @@ public class CmpItemCatServiceImpl implements CmpItemCatService {
     private CmpItemCatDao cmpItemCatDao;
 
     /**
-     * 插入一条商品信息
+     * 插入一条商品类目信息
      * @param cmpItemCat
      * @return int
      */

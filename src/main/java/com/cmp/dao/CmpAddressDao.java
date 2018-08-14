@@ -29,4 +29,11 @@ public interface CmpAddressDao {
     int updateByPrimaryKeySelective(CmpAddress record);
 
     int updateByPrimaryKey(CmpAddress record);
+
+    /**
+     * 更新指定openid的type
+     * @param openid
+     * @return
+     */
+    int updateTypeByOpenId(@Param("openid") String openid , @Param("type") int type);
 }
