@@ -32,7 +32,7 @@ public class CmpAddressController {
      */
     @RequestMapping(value = "/add_address", method = RequestMethod.POST)
     public Result add_address(HttpServletRequest request, HttpServletResponse response) {
-        Result<String> result;
+        Result result;
         String openid = (String)SessionUtils.getSessionAttribute(request, "openid");
         if (openid == null) {
             result = Result.Error("尚未登陆");
@@ -125,7 +125,7 @@ public class CmpAddressController {
     @RequestMapping(value = "/del_address", method = RequestMethod.POST)
     public Result del_address(HttpServletRequest request, HttpServletResponse response) {
 
-        Result<String> result;
+        Result result;
 
         /**
          * 从session中获取openid
@@ -171,7 +171,7 @@ public class CmpAddressController {
     @RequestMapping(value = "/update_address", method = RequestMethod.POST)
     public Result update_address(HttpServletRequest request, HttpServletResponse response) {
 
-        Result<String> result;
+        Result result;
         String openid = (String)SessionUtils.getSessionAttribute(request, "openid");
         if (openid == null || "".equals(openid)) {
             result = Result.Error("尚未登陆");

@@ -28,8 +28,8 @@ public class CmpItemCatController {
 	 * @return
 	 */
 	@PostMapping(value="/item/insert_itemCat")
-	public Result<String> insert_itemCat(HttpServletRequest request , HttpServletResponse response){
-		Result<String> result = null;
+	public Result insert_itemCat(HttpServletRequest request , HttpServletResponse response){
+		Result result = null;
 		Long parentId = null;
 		Boolean isParent = null;
 		String name = request.getParameter("parentId").trim();
@@ -93,7 +93,7 @@ public class CmpItemCatController {
 			}
 			CmpItemCat cmpItemCat = cmpItemCatService.selectOneItemCat(id);
 			list.add(cmpItemCat);
-			result = new Result<List<CmpItemCat>>(400,"成功",list);
+			result = new Result<List<CmpItemCat>>(200,"成功",list);
 			return result;
 			
 		}else {
@@ -108,7 +108,7 @@ public class CmpItemCatController {
 				return result;
 			}
 			list = cmpItemCatService.selectItemCat(parentId);
-			result = new Result<List<CmpItemCat>>(400,"成功",list);
+			result = new Result<List<CmpItemCat>>(200,"成功",list);
 			return result;
 			
 		}
@@ -119,8 +119,8 @@ public class CmpItemCatController {
 	 * 更改商品类目
 	 */
 	@PostMapping(value="/item/update_itemcat")
-	public Result<String> update_itemcat(HttpServletRequest request , HttpServletResponse response){
-		Result<String> result = null;	
+	public Result update_itemcat(HttpServletRequest request , HttpServletResponse response){
+		Result result = null;
 		Long id = null;
 		Long parentId = null;
 		Boolean isParent = null;

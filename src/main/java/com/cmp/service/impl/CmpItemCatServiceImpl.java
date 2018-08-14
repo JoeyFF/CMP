@@ -23,24 +23,17 @@ public class CmpItemCatServiceImpl implements CmpItemCatService {
 
     /**
      * 插入一条商品类目信息
+     * 这里不需要判断ip是否存在，分类是后台人员做的
      * @param cmpItemCat
      * @return int
      */
     @Override
     public int insertItemCat(CmpItemCat cmpItemCat) {
-        /**
-         * 这里先判断id是否存在再进行插入，如果不存在的话返回-1
-         */
-        CmpItemCat isExist = cmpItemCatDao.selectByPrimaryKey(cmpItemCat.getId());
-        //存在的话在进行正常插入，正常更新的返回值是大于等于0的
-        if (isExist != null) {
-            return cmpItemCatDao.insertSelective(cmpItemCat);
-        }
-        return -1;
+        return cmpItemCatDao.insertSelective(cmpItemCat);
     }
 
     /**
-     * 返回指定id的商品
+     * 返回指定id的商品类目
      * @param id
      * @return CmpItemCat
      */
