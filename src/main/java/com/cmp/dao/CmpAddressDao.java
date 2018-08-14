@@ -4,7 +4,9 @@ import com.cmp.pojo.CmpAddress;
 import com.cmp.pojo.CmpAddressQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CmpAddressDao {
     int countByExample(CmpAddressQuery example);
 

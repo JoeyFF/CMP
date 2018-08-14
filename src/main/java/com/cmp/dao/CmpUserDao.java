@@ -4,7 +4,9 @@ import com.cmp.pojo.CmpUser;
 import com.cmp.pojo.CmpUserQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CmpUserDao {
     int countByExample(CmpUserQuery example);
 
