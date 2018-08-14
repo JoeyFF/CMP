@@ -4,7 +4,9 @@ import com.cmp.pojo.CmpItemCat;
 import com.cmp.pojo.CmpItemCatQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CmpItemCatDao {
     int countByExample(CmpItemCatQuery example);
 
