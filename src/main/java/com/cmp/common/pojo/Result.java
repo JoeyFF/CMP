@@ -43,16 +43,16 @@ public class Result<T> {
         this.data = data;
     }
 
-    public static Result Success(){
+    public static Result<String> Success(){
         return Success("成功");
     }
 
-    public static Result Success(String msg){
-        return new Result(200, msg , null);
+    public static Result<String> Success(String msg){
+        return new Result<String>(200, msg , null);
     }
 
-    public static Result Error(String msg){
-        return new Result(400, msg , null);
+    public static Result<String> Error(String msg){
+        return new Result<String>(400, msg , null);
     }
 
 }
