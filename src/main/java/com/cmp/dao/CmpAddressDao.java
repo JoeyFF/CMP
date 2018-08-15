@@ -4,7 +4,9 @@ import com.cmp.pojo.CmpAddress;
 import com.cmp.pojo.CmpAddressQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CmpAddressDao {
     int countByExample(CmpAddressQuery example);
 
@@ -27,4 +29,11 @@ public interface CmpAddressDao {
     int updateByPrimaryKeySelective(CmpAddress record);
 
     int updateByPrimaryKey(CmpAddress record);
+
+    /**
+     * 更新指定openid的type
+     * @param openid
+     * @return
+     */
+    int updateTypeByOpenId(@Param("openid") String openid , @Param("type") int type);
 }

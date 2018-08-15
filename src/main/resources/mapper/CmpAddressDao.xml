@@ -295,4 +295,10 @@
       type = #{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--更新指定openid的type-->
+  <update id="updateTypeByOpenId">
+    update cmp_address
+    set type = #{type}
+    where openid = #{openid}
+  </update>
 </mapper>

@@ -55,13 +55,24 @@ public class CmpAddressServiceImpl implements CmpAddressService{
     @Override
     /**
      * 更改收货地址
+     * TODO 默认地址需要完善
      */
     public int updateAddress(CmpAddress cmpAddress) {
         CmpUser exisUser = cmpUserService.selectByOpenid(cmpAddress.getOpenid());
         if(exisUser != null) {
-            return cmpAddressDao.updateByPrimaryKey(cmpAddress);
+            if(cmpAddress.getType() == 1){
+                return cmpAddressDao.updateByPrimaryKey(cmpAddress);
+            }else{
+                //先更新所有指定openid的地址的type为1
+                if(cmpAddressDao.updateTypeByOpenId(cmpAddress.getOpenid() , 1) >= 1){
+                    return cmpAddressDao.updateByPrimaryKey(cmpAddress);
+                }else{
+                    return -1;
+                }
+            }
+
         }else {
-            return 0;
+            return -1;
         }
     }
 
