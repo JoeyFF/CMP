@@ -58,5 +58,5 @@ public interface CmpItemService {
      * @param id
      * @return
      */
-    public int updateItemStatusById(Long id);
+    //public int updateItemStatusById(Long id, Byte status);
 }
